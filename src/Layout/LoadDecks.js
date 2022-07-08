@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function LoadDecks({ decks, setDecks, cards, setCards }) {
-  
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -55,6 +54,7 @@ function LoadDecks({ decks, setDecks, cards, setCards }) {
     };
   }, [setCards]);
 
+// Homepage HTML
   const deckList = decks.map((deck) => (
     <div key={deck.id} className="card w-50">
       <div className="card-body">

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 export default function LoadCards({ decks, params, deck, setDeck }) {
   const [cardIndex, setCardIndex] = useState(0);
-  
+
   const [cardSide, setCardSide] = useState(true);
 
   const history = useHistory();
@@ -27,7 +27,7 @@ export default function LoadCards({ decks, params, deck, setDeck }) {
     return () => {
       abortController.abort();
     };
-  }, [params.deckId]);
+  }, [params.deckId, setDeck]);
   console.log("deck", deck.cards);
 
   const card = deck.cards[cardIndex] || {};
