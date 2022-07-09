@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import {updateDeck} from "../utils/api/index"
 
 export default function EditDeck({ deck, setDeck, decks, setDecks }) {
+  const history= useHistory()
   const initialFormState = {
     name: deck.name,
     description: deck.description,
@@ -26,24 +28,14 @@ export default function EditDeck({ deck, setDeck, decks, setDecks }) {
     </nav>
   );
 
-  const handleEditDeck = (event) => {
+  const handleEditDeck = async (event) => {
     event.preventDefault();
-    setDeck({
-      ...deck,
+   await updateDeck({
+    ...deck,
       name: formData.name,
       description: formData.description,
     });
-
-    const decksCopy = decks;
-    const filtered = decksCopy.filter((deckCopy) => deckCopy.id !== deck.id);
-
-    console.log("filter", filtered);
-
-    setDecks([
-      ...filtered,
-      { name: formData.name, description: formData.description, id: deck.id },
-    ]);
-    console.log("name", formData.name, "desc", formData.description);
+history.push(`/decks/${deck.id}`)
   };
 
   // go through decks array
@@ -101,6 +93,7 @@ export default function EditDeck({ deck, setDeck, decks, setDecks }) {
         type="submit"
         className="btn btn-primary"
         style={{ margin: "0 10px" }}
+        
       >
         Submit
       </button>

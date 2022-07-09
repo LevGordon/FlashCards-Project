@@ -58,10 +58,10 @@ export default function Deck({ decks, setDecks, cards }) {
           />
         </Route>
         <Route path={`${path}/cards/new`}>
-          <CreateCard />
+          <CreateCard deck={deck}/>
         </Route>
         <Route path={`${path}/cards/:cardId/edit`}>
-          <EditCard />
+          <EditCard deck={deck} />
         </Route>
       </Switch>
     </React.Fragment>

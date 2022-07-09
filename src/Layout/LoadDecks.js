@@ -1,27 +1,34 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
+import { deleteDeck, readDeck } from "../utils/api";
+
 
 function LoadDecks({ decks, setDecks, cards, setCards }) {
+const history = useHistory()
+const { params } = useRouteMatch();
+async function getDecks(abortController) {
+  try {
+    const response = await fetch("http://localhost:8080/decks", {
+      signal: abortController.signal,
+    });
+    const data = await response.json();
+    setDecks(data);
+  } catch (error) {
+    if (error.name === "AbortError") {
+      console.log(error.name);
+    } else {
+      throw error;
+    }
+  }
+}
+
+
   useEffect(() => {
     const abortController = new AbortController();
 
-    async function getDecks() {
-      try {
-        const response = await fetch("http://localhost:8080/decks", {
-          signal: abortController.signal,
-        });
-        const data = await response.json();
-        setDecks(data);
-      } catch (error) {
-        if (error.name === "AbortError") {
-          console.log(error.name);
-        } else {
-          throw error;
-        }
-      }
-    }
+    
 
-    getDecks();
+    getDecks(abortController);
 
     return () => {
       abortController.abort();
@@ -54,6 +61,32 @@ function LoadDecks({ decks, setDecks, cards, setCards }) {
     };
   }, [setCards]);
 
+  const handleDeleteDeck = (deck) => {
+    const deleteBox = window.confirm(
+      "Delete deck? \n \n You will not be able to recover it."
+    );
+    // if user hits "ok" on popup, code below deletes deck
+    if (deleteBox) {
+      console.log("please Delete deck");
+      async function deleteDeckApiCall() {
+        try {
+         await deleteDeck(deck.id);
+         const abortController = new AbortController();
+         await getDecks(abortController)
+        } catch (error) {
+          if (error.name === "AbortError") {
+            console.log(error.name);
+          } else {
+            throw error;
+          }
+        }
+      }
+
+      deleteDeckApiCall();
+    }
+  };
+
+  
 // Homepage HTML
   const deckList = decks.map((deck) => (
     <div key={deck.id} className="card w-50">
@@ -90,11 +123,8 @@ function LoadDecks({ decks, setDecks, cards, setCards }) {
             <button
               type="delete"
               className="btn btn-danger"
-              onClick={() =>
-                window.confirm(
-                  "Delete this deck? \n \n You will not be able to recover it."
-                )
-              }
+              onClick={()=>handleDeleteDeck(deck)}
+              
             >
               Delete
             </button>
