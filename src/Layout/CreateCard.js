@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createCard } from "../utils/api/index";
 
 export default function CreateCard({ deck }) {
-  const { url } = useRouteMatch();
   const breadcrumb = (
     <nav aria-label="breadcrumb">
       <ol className="breadcrumb">
@@ -11,7 +10,7 @@ export default function CreateCard({ deck }) {
           <Link to="/">Home</Link>
         </li>
         <li className="breadcrumb-item">
-          <Link to={`${url}`}> {deck.name} </Link>
+          <Link to={`/decks/${deck.id}`}> {deck.name} </Link>
         </li>
         <li className="breadcrumb-item active" aria-current="page">
           Edit Deck
@@ -32,7 +31,6 @@ export default function CreateCard({ deck }) {
       front: cardFormData.front,
       back: cardFormData.back,
     });
-    console.log("hello world");
     setCardFormData(initialCardForm);
   };
 
@@ -49,8 +47,7 @@ export default function CreateCard({ deck }) {
     <form onSubmit={handleCreateCard}>
       <div className="mb-3">
         <label htmlFor="front" className="form-label">
-          {" "}
-          Front{" "}
+          Front
         </label>
         <input
           id="front"
@@ -65,8 +62,7 @@ export default function CreateCard({ deck }) {
       </div>
       <div className="mb-3">
         <label htmlFor="back" className="form-label">
-          {" "}
-          Back{" "}
+          Back
         </label>
         <textarea
           id="back"

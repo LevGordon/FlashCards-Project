@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import { Link, useRouteMatch, useHistory } from "react-router-dom";
-import { deleteDeck, readDeck } from "../utils/api";
+import { Link } from "react-router-dom";
+import { deleteDeck } from "../utils/api";
 
 
 function LoadDecks({ decks, setDecks, cards, setCards }) {
-const history = useHistory()
-const { params } = useRouteMatch();
+
 async function getDecks(abortController) {
   try {
     const response = await fetch("http://localhost:8080/decks", {

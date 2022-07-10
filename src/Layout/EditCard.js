@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
-import { updateCard, readCard } from "../utils/api/index";
+import { updateCard } from "../utils/api/index";
 
 
 export default function EditCard({ deck }) {
@@ -8,10 +8,7 @@ export default function EditCard({ deck }) {
     const currentCard = deck.cards.map((card)=>{
         return card
       })
-    console.log("🚀 ~ currentCard", currentCard)
-const filtered = currentCard.filter((card)=>card.id==params.cardId)
-console.log("🚀 ~ params.cardId", params.cardId)
-console.log("🚀 ~ filtered", filtered)
+const filtered = currentCard.filter((card)=>card.id == params.cardId)
 
 
     console.log("🚀 ~ deck", deck.cards.front)

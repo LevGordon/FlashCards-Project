@@ -48,12 +48,6 @@
       "back": "b",
       "deckId": 1,
       "id": 7
-    },
-    {
-      "front": "Plant name of tree with acorns",
-      "back": "Oak tree",
-      "deckId": 1,
-      "id": 8
     }
   ]
 }
