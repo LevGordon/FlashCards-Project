@@ -1,32 +1,39 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { deleteDeck } from "../utils/api";
+import { deleteDeck, listDecks } from "../utils/api";
 
 
 function LoadDecks({ decks, setDecks, cards, setCards }) {
 
+// async function getDecks(abortController) {
+//   try {
+//     const response = await fetch("http://localhost:8080/decks", {
+//       signal: abortController.signal,
+//     });
+//     const data = await response.json();
+//     setDecks(data);
+//   } catch (error) {
+//     if (error.name === "AbortError") {
+//       console.log(error.name);
+//     } else {
+//       throw error;
+//     }
+//   }
+// }
+
+
 async function getDecks(abortController) {
   try {
-    const response = await fetch("http://localhost:8080/decks", {
-      signal: abortController.signal,
-    });
-    const data = await response.json();
-    setDecks(data);
+    const fetchedDeckList = await listDecks(abortController.signal);
+    setDecks(fetchedDeckList);
   } catch (error) {
-    if (error.name === "AbortError") {
-      console.log(error.name);
-    } else {
-      throw error;
+      console.error(error);
     }
   }
-}
 
 
   useEffect(() => {
     const abortController = new AbortController();
-
-    
-
     getDecks(abortController);
 
     return () => {
@@ -66,7 +73,6 @@ async function getDecks(abortController) {
     );
     // if user hits "ok" on popup, code below deletes deck
     if (deleteBox) {
-      console.log("please Delete deck");
       async function deleteDeckApiCall() {
         try {
          await deleteDeck(deck.id);

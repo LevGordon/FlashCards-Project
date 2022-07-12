@@ -1,17 +1,11 @@
-import React, { useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
-import { updateCard } from "../utils/api/index";
+import React, { useEffect, useState } from "react";
+import { useHistory, useRouteMatch, Link } from "react-router-dom";
+import { readCard, updateCard } from "../utils/api";
+import CardForm from "./CardForm";
 
 
 export default function EditCard({ deck }) {
-    const { url, params } = useRouteMatch();
-    const currentCard = deck.cards.map((card)=>{
-        return card
-      })
-const filtered = currentCard.filter((card)=>card.id == params.cardId)
 
-
-    console.log("🚀 ~ deck", deck.cards.front)
     const breadcrumb = (
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
@@ -19,7 +13,7 @@ const filtered = currentCard.filter((card)=>card.id == params.cardId)
               <Link to="/">Home</Link>
             </li>
             <li className="breadcrumb-item">
-              <Link to={`${url}`}> {deck.name} </Link>
+              <Link to={`/decks/${deck.id}`}> {deck.name} </Link>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               Edit Card
@@ -28,90 +22,52 @@ const filtered = currentCard.filter((card)=>card.id == params.cardId)
         </nav>
       );
 
-// let card = await 
 
+  const [editCardData, setEditCardData] = useState({});
+  const { params } = useRouteMatch();
+  const history = useHistory();
 
+  // API calls to fetch current deck, then fetch current card
+  useEffect(() => {
+    const abortController = new AbortController();
+    async function getDeck() {
+      try {
 
-      let initialCardForm = {
-        front: filtered[0].front,
-        back: filtered[0].back,
-      };
+        const fetchedCard = await readCard(params.cardId);
+        setEditCardData(fetchedCard);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getDeck();
+    return () => abortController.abort();
+  }, [params.deckId, params.cardId]);
 
-      const [cardEditData, setCardEditData] = useState(initialCardForm);
+  // Handlers for submitting, editing, and cancelling on the card form
+  const handleEditCardSubmit = async (event) => {
+    event.preventDefault();
+    await updateCard(editCardData);
+    history.push(`/decks/${params.deckId}`);
+  };
 
-      const handleEditCard = async (event) => {
-        event.preventDefault();
-        await updateCard( {
-          front: cardEditData.front,
-          back: cardEditData.back,
-          id: params.cardId
-        });
-        console.log("hello world");
-        setCardEditData(initialCardForm);
-      };
-    
-      const handleEditFormChange = (event) => {
-        event.preventDefault();
-        setCardEditData({
-          ...initialCardForm,
-          ...cardEditData,
-          [event.target.name]: event.target.value,
-        });
-      };
+  const handleEditCardChange = (event) => {
+    event.preventDefault();
+    setEditCardData({
+      ...editCardData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
-
-
-      const addCard = (
-        <form onSubmit={handleEditCard}>
-          <div className="mb-3">
-            <label htmlFor="front" className="form-label">
-              {" "}
-              Front{" "}
-            </label>
-            <input
-              id="front"
-              name="front"
-              type="text"
-              className="form-control"
-              value={cardEditData.front}
-              onChange={handleEditFormChange}
-              placeholder="Enter the card front here"
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="back" className="form-label">
-              {" "}
-              Back{" "}
-            </label>
-            <textarea
-              id="back"
-              name="back"
-              className="form-control"
-              value={cardEditData.back}
-              onChange={handleEditFormChange}
-              placeholder="Enter the card back here"
-              rows="4"
-              required
-            />
-          </div>
-          <Link to={`/decks/${deck.id}`} className="btn btn-secondary">
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            style={{ margin: "0 10px" }}
-          >
-            Submit
-          </button>
-        </form>
-      );
-
-
-    return (<div>
-    {breadcrumb}
-    {addCard}
-    </div>
-    )
+ 
+  return (<div>
+            {breadcrumb}
+            <CardForm
+        cardData={editCardData}
+        handleChange={handleEditCardChange}
+        handleSubmit={handleEditCardSubmit}
+        deck={deck}
+      />
+        </div>
+        )
 }
+

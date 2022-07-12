@@ -16,7 +16,7 @@ export default function Deck({ decks, setDecks, cards }) {
         <li className="breadcrumb-item">
           <Link to="/">Home</Link>
         </li>
-        <li class="breadcrumb-item">
+        <li className="breadcrumb-item">
           <Link to={`${url}`}> {deck.name} </Link>
         </li>
         <li className="breadcrumb-item active" aria-current="page">
@@ -40,19 +40,20 @@ export default function Deck({ decks, setDecks, cards }) {
 
         <Route path={`${path}/study`}>
           {breadcrumb}
-          <h4> Study: {`${deck.name}`} </h4>
+          <h2>{`${deck.name}`}: Study </h2>
           <LoadCards
             cards={cards}
             decks={decks}
             params={params}
             deck={deck}
             setDeck={setDeck}
+            path={path}
           />
         </Route>
         <Route exact path={`${path}/edit`}>
           <EditDeck
             deck={deck}
-            setDeck={setDeck}
+            setDeck={setDeck} 
             decks={decks}
             setDecks={setDecks}
           />

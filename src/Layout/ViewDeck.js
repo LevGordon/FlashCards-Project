@@ -32,7 +32,6 @@ export default function ViewDeck({ deck, setDeck }) {
     );
     // if user hits "ok" on popup, code below deletes deck
     if (deleteBox) {
-      console.log("please Delete deck");
       async function deleteDeckApiCall() {
         try {
           let newDeckList = await deleteDeck(params.deckId);
@@ -51,7 +50,6 @@ export default function ViewDeck({ deck, setDeck }) {
     }
   };
 
-  console.log("deck.cards", deck.cards);
 
   const cardList = deck.cards.map((card) => (
     <div key={card.id} className="card container">

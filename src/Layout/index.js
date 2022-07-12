@@ -15,6 +15,7 @@ function Layout() {
       <Header />
       <div className="container">
         <Switch>
+
           <Route exact path="/">
             <Link to="/decks/new" type="button" className="btn btn-secondary">
               Create Deck
@@ -30,6 +31,7 @@ function Layout() {
           <Route path="/decks/new">
             <CreateDeck decks={decks}/>
           </Route>
+
           <Route path="/decks/:deckId">
             <StudyDeck
               decks={decks}
@@ -38,9 +40,11 @@ function Layout() {
               setCards={setCards}
             />
           </Route>
+
           <Route>
             <NotFound />
           </Route>
+          
         </Switch>
       </div>
     </React.Fragment>

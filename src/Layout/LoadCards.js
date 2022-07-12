@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { readDeck } from "../utils/api";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
-export default function LoadCards({ decks, params, deck, setDeck }) {
+export default function LoadCards({params, deck, setDeck, path }) {
   const [cardIndex, setCardIndex] = useState(0);
 
   const [cardSide, setCardSide] = useState(true);
@@ -46,11 +46,30 @@ export default function LoadCards({ decks, params, deck, setDeck }) {
     setCardSide(!cardSide);
   };
 
+
+  const notEnough = (
+    <div>
+      <h4>
+        Not enough cards.
+      </h4>
+      <p>
+        You need at least 3 cards to study. There{" "}{deck.cards.length === 0 || deck.cards.length === 1 ? "is" : "are"}{" "}
+        {`${deck.cards.length}`}{" "} {deck.cards.length === 0 || deck.cards.length === 1 ? "card" : "cards"} in this deck.
+      </p>
+      <Link to={`${path}/cards/new`} className="btn btn-primary">
+        Add Cards
+      </Link>
+
+
+
+    </div>
+  )
+
   const pageCard = (
-    <div key={card.id} class="card w-50">
-      <div class="card-body">
+    <div key={card.id} className="card w-50">
+      <div className="card-body">
         <div
-          class="row"
+          className="row"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -79,7 +98,7 @@ export default function LoadCards({ decks, params, deck, setDeck }) {
               Flip
             </button>
             {!cardSide && (
-              <button onClick={handleNext} to="" class="btn btn-primary">
+              <button onClick={handleNext} className="btn btn-primary">
                 Next
               </button>
             )}
@@ -89,5 +108,10 @@ export default function LoadCards({ decks, params, deck, setDeck }) {
     </div>
   );
 
-  return pageCard;
+  return (
+    <React.Fragment>
+    {deck.cards.length <= 2 ? notEnough : pageCard }
+    </React.Fragment>
+    )
+
 }

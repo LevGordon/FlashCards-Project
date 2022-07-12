@@ -13,7 +13,7 @@ export default function CreateCard({ deck }) {
           <Link to={`/decks/${deck.id}`}> {deck.name} </Link>
         </li>
         <li className="breadcrumb-item active" aria-current="page">
-          Edit Deck
+          Add Card
         </li>
       </ol>
     </nav>
