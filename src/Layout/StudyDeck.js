@@ -30,11 +30,7 @@ export default function Deck({ decks, setDecks }) {
     <React.Fragment>
       <Switch>
         <Route exact path={`${path}`}>
-          <ViewDeck
-            deck={deck}
-            setDeck={setDeck}
-            setDecks={setDecks}
-          />
+          <ViewDeck deck={deck} setDeck={setDeck} setDecks={setDecks} />
         </Route>
 
         <Route path={`${path}/study`}>
@@ -50,13 +46,13 @@ export default function Deck({ decks, setDecks }) {
         <Route exact path={`${path}/edit`}>
           <EditDeck
             deck={deck}
-            setDeck={setDeck} 
+            setDeck={setDeck}
             decks={decks}
             setDecks={setDecks}
           />
         </Route>
         <Route path={`${path}/cards/new`}>
-          <CreateCard deck={deck}/>
+          <CreateCard deck={deck} />
         </Route>
         <Route path={`${path}/cards/:cardId/edit`}>
           <EditCard deck={deck} />

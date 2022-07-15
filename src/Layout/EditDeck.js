@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
-import {updateDeck, readDeck} from "../utils/api/index"
+import { updateDeck, readDeck } from "../utils/api/index";
 import DeckForm from "./DeckForm";
 
 export default function EditDeck({ deck, setDeck, decks, setDecks }) {
-  const history= useHistory()
+  const history = useHistory();
   const initialFormState = {
     name: deck.name,
     description: deck.description,
@@ -45,12 +45,12 @@ export default function EditDeck({ deck, setDeck, decks, setDecks }) {
 
   const handleEditDeck = async (event) => {
     event.preventDefault();
-   await updateDeck({
-    ...deck,
+    await updateDeck({
+      ...deck,
       name: editDeckFormData.name,
       description: editDeckFormData.description,
     });
-history.push(`/decks/${deck.id}`)
+    history.push(`/decks/${deck.id}`);
   };
 
   // go through decks array
@@ -71,11 +71,14 @@ history.push(`/decks/${deck.id}`)
     <React.Fragment>
       <div>{breadcrumb}</div>
       <h1>Edit Deck</h1>
-      <div> <DeckForm
-        handleChange={handleFormChange}
-        handleSubmit={handleEditDeck}
-        deckData={editDeckFormData}
-      /></div>
+      <div>
+        {" "}
+        <DeckForm
+          handleChange={handleFormChange}
+          handleSubmit={handleEditDeck}
+          deckData={editDeckFormData}
+        />
+      </div>
     </React.Fragment>
   );
 }

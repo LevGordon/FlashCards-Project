@@ -4,11 +4,10 @@ import { Link } from "react-router-dom";
 // Component that renders the form for editing or creating a new card
 
 export default function CardForm({
-
   handleSubmit,
   handleChange,
   cardData,
-  deck
+  deck,
 }) {
   return (
     <form onSubmit={handleSubmit}>
@@ -45,10 +44,7 @@ export default function CardForm({
       <Link to={`/decks/${deck.id}`} className="btn btn-secondary">
         Done
       </Link>
-      <button
-        className="btn btn-primary"
-        style={{ margin: "0 10px" }}
-      >
+      <button className="btn btn-primary" style={{ margin: "0 10px" }}>
         Save
       </button>
     </form>

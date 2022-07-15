@@ -25,7 +25,6 @@ export default function ViewDeck({ deck, setDeck }) {
       abortController.abort();
     };
   }, [params.deckId, setDeck]); // add setDeck and cards to dependencies
-  
 
   const handleDeleteDeck = () => {
     const deleteBox = window.confirm(
@@ -60,7 +59,8 @@ export default function ViewDeck({ deck, setDeck }) {
       async function deleteCardApiCall() {
         try {
           let newCardList = await deleteCard(cardId);
-          history.push('/')
+          console.log(newCardList);
+          history.push("/");
           history.push(`/decks/${params.deckId}`);
         } catch (error) {
           if (error.name === "AbortError") {
@@ -73,14 +73,11 @@ export default function ViewDeck({ deck, setDeck }) {
 
       deleteCardApiCall();
     }
-
-
-
   };
 
   const cardList = deck.cards.map((card) => (
     <div key={card.id} className="card container">
-      <li className="row">
+      <li className="row" style={{ margin: "0px" }}>
         <div className="col-6">
           <p> {card.front} </p>
         </div>
@@ -90,15 +87,24 @@ export default function ViewDeck({ deck, setDeck }) {
           </div>
           <div
             className="row"
-            style={{ display: "flex", justifyContent: "flex-end" }}
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              margin: "2px 0px 3px 0px",
+            }}
           >
             <Link
               to={`${url}/cards/${card.id}/edit`}
               className="btn btn-secondary"
+              style={{ margin: "0px 2px 0px 3px", padding: "3px 10px 2px" }}
             >
               Edit
             </Link>
-            <button className="btn btn-danger" onClick={() => handleDeleteCard(card.id)}>
+            <button
+              className="btn btn-danger"
+              style={{ margin: "0px 2px 0px 3px", padding: "3px 10px 2px" }}
+              onClick={() => handleDeleteCard(card.id)}
+            >
               Delete
             </button>
           </div>
@@ -109,33 +115,37 @@ export default function ViewDeck({ deck, setDeck }) {
 
   const selectedDeck = (
     <div className="container column">
-      <div className="column">
+      <div className="column" style={{ margin: "20px 0px", padding: "0px" }}>
         <h3> {deck.name} </h3>
         <p> {deck.description}</p>
       </div>
       <div
         className="row"
-        style={{ display: "flex", justifyContent: "space-between" }}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          margin: "10px 0px",
+        }}
       >
         <div className="row">
           <Link
             to={`${url}/edit`}
             className="btn btn-secondary"
-            style={{ margin: "0 10px" }}
+            style={{ margin: "0px 5px" }}
           >
             Edit
           </Link>
           <Link
             to={`${url}/study`}
             className="btn btn-primary"
-            style={{ margin: "0 10px" }}
+            style={{ margin: "0px 5px" }}
           >
             Study
           </Link>
           <Link
             to={`${url}/cards/new`}
             className="btn btn-primary"
-            style={{ margin: "0 10px" }}
+            style={{ margin: "0px 5px" }}
           >
             Add Cards
           </Link>
@@ -168,17 +178,6 @@ export default function ViewDeck({ deck, setDeck }) {
 
   return (
     <React.Fragment>
-      {/* <Switch>
-            <Route exact path={`${path}/edit`}>
-                <EditDeck />
-            </Route>
-            <Route path={`${path}/cards/new`}>
-                <CreateCard />
-            </Route>
-            <Route path={`${path}/cards/:cardId/edit`} >
-                <EditCard />
-            </Route>
-        </Switch> */}
       {breadcrumb}
       {selectedDeck}
       <h2>Cards</h2>

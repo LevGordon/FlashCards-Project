@@ -13,7 +13,13 @@ export default function Study({ cards, decks, deck, setDeck }) {
       <h4> Study: {`${decks[params.deckId].name}`} </h4>
       <Switch>
         <Route>
-          <LoadCards cards={cards} decks={decks} params={params} deck={deck} setDeck={setDeck} />
+          <LoadCards
+            cards={cards}
+            decks={decks}
+            params={params}
+            deck={deck}
+            setDeck={setDeck}
+          />
         </Route>
       </Switch>
     </React.Fragment>

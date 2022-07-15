@@ -3,11 +3,7 @@ import { Link } from "react-router-dom";
 
 // Component that renders the form for editing or creating a new deck
 
-export default function DeckForm({
-  deckData,
-  handleSubmit,
-  handleChange,
-}) {
+export default function DeckForm({ deckData, handleSubmit, handleChange }) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-3">

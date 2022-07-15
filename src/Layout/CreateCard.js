@@ -5,18 +5,15 @@ import { readDeck } from "../utils/api/index";
 import CardForm from "./CardForm";
 
 export default function CreateCard() {
-
   let initialCardForm = {
     front: "",
     back: "",
   };
 
-  const { params } = useRouteMatch()
+  const { params } = useRouteMatch();
 
-  const [ deck, setDeck ] = useState({})
+  const [deck, setDeck] = useState({});
   const [cardFormData, setCardFormData] = useState(initialCardForm);
-
-
 
   useEffect(() => {
     async function getDeck() {
@@ -26,9 +23,9 @@ export default function CreateCard() {
     getDeck();
   }, [params.deckId]);
 
-  console.log("params::::", params)
-  console.log("deck::::", deck)
-  console.log("FFFdeck::::", deck)
+  console.log("params::::", params);
+  console.log("deck::::", deck);
+  console.log("FFFdeck::::", deck);
 
   const handleCreateCard = async (event) => {
     event.preventDefault();
@@ -109,7 +106,7 @@ export default function CreateCard() {
     </nav>
   );
 
-  console.log("deck::::", deck)
+  console.log("deck::::", deck);
 
   return (
     <React.Fragment>

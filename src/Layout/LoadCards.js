@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { readDeck } from "../utils/api";
 import { useHistory, Link } from "react-router-dom";
 
-export default function LoadCards({params, deck, setDeck, path }) {
+export default function LoadCards({ params, deck, setDeck, path }) {
   const [cardIndex, setCardIndex] = useState(0);
   const [cardSide, setCardSide] = useState(true);
 
@@ -45,24 +45,21 @@ export default function LoadCards({params, deck, setDeck, path }) {
     setCardSide(!cardSide);
   };
 
-
   const notEnough = (
     <div>
-      <h4>
-        Not enough cards.
-      </h4>
+      <h4>Not enough cards.</h4>
       <p>
-        You need at least 3 cards to study. There{" "}{deck.cards.length === 0 || deck.cards.length === 1 ? "is" : "are"}{" "}
-        {`${deck.cards.length}`}{" "} {deck.cards.length === 0 || deck.cards.length === 1 ? "card" : "cards"} in this deck.
+        You need at least 3 cards to study. There{" "}
+        {deck.cards.length === 0 || deck.cards.length === 1 ? "is" : "are"}{" "}
+        {`${deck.cards.length}`}{" "}
+        {deck.cards.length === 0 || deck.cards.length === 1 ? "card" : "cards"}{" "}
+        in this deck.
       </p>
       <Link to={`${path}/cards/new`} className="btn btn-primary">
         Add Cards
       </Link>
-
-
-
     </div>
-  )
+  );
 
   const pageCard = (
     <div key={card.id} className="card w-50">
@@ -109,8 +106,7 @@ export default function LoadCards({params, deck, setDeck, path }) {
 
   return (
     <React.Fragment>
-    {deck.cards.length <= 2 ? notEnough : pageCard }
+      {deck.cards.length <= 2 ? notEnough : pageCard}
     </React.Fragment>
-    )
-
+  );
 }
