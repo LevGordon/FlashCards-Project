@@ -4,7 +4,6 @@ import { useHistory, Link } from "react-router-dom";
 
 export default function LoadCards({params, deck, setDeck, path }) {
   const [cardIndex, setCardIndex] = useState(0);
-
   const [cardSide, setCardSide] = useState(true);
 
   const history = useHistory();

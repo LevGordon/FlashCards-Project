@@ -8,7 +8,7 @@ import CreateDeck from "./CreateDeck";
 
 function Layout() {
   const [decks, setDecks] = useState([]);
-  const [cards, setCards] = useState([]);
+  
 
   return (
     <React.Fragment>
@@ -17,14 +17,12 @@ function Layout() {
         <Switch>
 
           <Route exact path="/">
-            <Link to="/decks/new" type="button" className="btn btn-secondary">
+            <Link to="/decks/new" type="button" className="btn btn-secondary" style={{margin: "5, 0 px"}}>
               Create Deck
             </Link>
             <LoadDecks
               decks={decks}
-              cards={cards}
               setDecks={setDecks}
-              setCards={setCards}
             />
           </Route>
 
@@ -35,9 +33,7 @@ function Layout() {
           <Route path="/decks/:deckId">
             <StudyDeck
               decks={decks}
-              cards={cards}
               setDecks={setDecks}
-              setCards={setCards}
             />
           </Route>
 

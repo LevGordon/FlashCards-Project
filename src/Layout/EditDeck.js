@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
-import {updateDeck} from "../utils/api/index"
+import {updateDeck, readDeck} from "../utils/api/index"
+import DeckForm from "./DeckForm";
 
 export default function EditDeck({ deck, setDeck, decks, setDecks }) {
   const history= useHistory()
@@ -8,9 +9,23 @@ export default function EditDeck({ deck, setDeck, decks, setDecks }) {
     name: deck.name,
     description: deck.description,
   };
-  const [formData, setFormData] = useState(initialFormState);
+  const [editDeckFormData, setEditDeckFormData] = useState(initialFormState);
 
-  const { url } = useRouteMatch();
+  const { params } = useRouteMatch();
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    async function getDeck() {
+      try {
+        const fetchedDeck = await readDeck(params.deckId);
+        setEditDeckFormData(fetchedDeck);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getDeck();
+    return () => abortController.abort();
+  }, [params.deckId]);
 
   const breadcrumb = (
     <nav aria-label="breadcrumb">
@@ -19,7 +34,7 @@ export default function EditDeck({ deck, setDeck, decks, setDecks }) {
           <Link to="/">Home</Link>
         </li>
         <li className="breadcrumb-item">
-          <Link to={`${url}`}> {formData.name} </Link>
+          <Link to={`/decks/${deck.id}`}> {editDeckFormData.name} </Link>
         </li>
         <li className="breadcrumb-item active" aria-current="page">
           Edit Deck
@@ -32,8 +47,8 @@ export default function EditDeck({ deck, setDeck, decks, setDecks }) {
     event.preventDefault();
    await updateDeck({
     ...deck,
-      name: formData.name,
-      description: formData.description,
+      name: editDeckFormData.name,
+      description: editDeckFormData.description,
     });
 history.push(`/decks/${deck.id}`)
   };
@@ -45,66 +60,22 @@ history.push(`/decks/${deck.id}`)
 
   const handleFormChange = (event) => {
     event.preventDefault();
-    setFormData({
+    setEditDeckFormData({
       ...initialFormState,
-      ...formData,
+      ...editDeckFormData,
       [event.target.name]: event.target.value,
     });
   };
-
-  const editDeckForm = (
-    <form onSubmit={handleEditDeck}>
-      <div className="mb-3">
-        <label htmlFor="name" className="form-label">
-          {" "}
-          Name{" "}
-        </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          className="form-control"
-          value={formData.name}
-          onChange={handleFormChange}
-          placeholder="Enter the deck name here"
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="description" className="form-label">
-          {" "}
-          Description{" "}
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          className="form-control"
-          value={formData.description}
-          onChange={handleFormChange}
-          placeholder="Enter the deck description here"
-          rows="4"
-          required
-        />
-      </div>
-      <Link to={`/decks/${deck.id}`} className="btn btn-secondary">
-        Cancel
-      </Link>
-      <button
-        type="submit"
-        className="btn btn-primary"
-        style={{ margin: "0 10px" }}
-        
-      >
-        Submit
-      </button>
-    </form>
-  );
 
   return (
     <React.Fragment>
       <div>{breadcrumb}</div>
       <h1>Edit Deck</h1>
-      <div>{editDeckForm}</div>
+      <div> <DeckForm
+        handleChange={handleFormChange}
+        handleSubmit={handleEditDeck}
+        deckData={editDeckFormData}
+      /></div>
     </React.Fragment>
   );
 }

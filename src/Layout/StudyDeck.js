@@ -6,7 +6,7 @@ import CreateCard from "./CreateCard";
 import EditCard from "./EditCard";
 import EditDeck from "./EditDeck";
 
-export default function Deck({ decks, setDecks, cards }) {
+export default function Deck({ decks, setDecks }) {
   const { params, path, url } = useRouteMatch();
   const [deck, setDeck] = useState({ cards: [] });
 
@@ -31,7 +31,6 @@ export default function Deck({ decks, setDecks, cards }) {
       <Switch>
         <Route exact path={`${path}`}>
           <ViewDeck
-            decks={decks}
             deck={deck}
             setDeck={setDeck}
             setDecks={setDecks}
@@ -42,8 +41,6 @@ export default function Deck({ decks, setDecks, cards }) {
           {breadcrumb}
           <h2>{`${deck.name}`}: Study </h2>
           <LoadCards
-            cards={cards}
-            decks={decks}
             params={params}
             deck={deck}
             setDeck={setDeck}

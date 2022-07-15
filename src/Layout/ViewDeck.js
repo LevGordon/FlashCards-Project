@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
-import { deleteDeck, readDeck } from "../utils/api";
+import { deleteDeck, readDeck, deleteCard } from "../utils/api";
 
 export default function ViewDeck({ deck, setDeck }) {
   const { url, params } = useRouteMatch();
@@ -24,7 +24,8 @@ export default function ViewDeck({ deck, setDeck }) {
     return () => {
       abortController.abort();
     };
-  }, [params.deckId, setDeck]); // add setDeck to dependencies
+  }, [params.deckId, setDeck]); // add setDeck and cards to dependencies
+  
 
   const handleDeleteDeck = () => {
     const deleteBox = window.confirm(
@@ -50,6 +51,32 @@ export default function ViewDeck({ deck, setDeck }) {
     }
   };
 
+  const handleDeleteCard = (cardId) => {
+    const deleteBox = window.confirm(
+      "Delete card? \n \n You will not be able to recover it."
+    );
+    // if user hits "ok" on popup, code below deletes card
+    if (deleteBox) {
+      async function deleteCardApiCall() {
+        try {
+          let newCardList = await deleteCard(cardId);
+          history.push('/')
+          history.push(`/decks/${params.deckId}`);
+        } catch (error) {
+          if (error.name === "AbortError") {
+            console.log(error.name);
+          } else {
+            throw error;
+          }
+        }
+      }
+
+      deleteCardApiCall();
+    }
+
+
+
+  };
 
   const cardList = deck.cards.map((card) => (
     <div key={card.id} className="card container">
@@ -71,7 +98,9 @@ export default function ViewDeck({ deck, setDeck }) {
             >
               Edit
             </Link>
-            <button className="btn btn-danger">Delete</button>
+            <button className="btn btn-danger" onClick={() => handleDeleteCard(card.id)}>
+              Delete
+            </button>
           </div>
         </div>
       </li>
