@@ -47,8 +47,8 @@ function LoadDecks({ decks, setDecks }) {
 
   // Homepage HTML
   const deckList = decks.map((deck) => (
-    <div className="row" style={{ margin: "5 0px" }}>
-      <div key={deck.id} className="card w-50">
+    <div className="row" key={deck.id} style={{ margin: "5 0px" }}>
+      <div className="card w-50">
         <div className="card-body">
           <div
             className="row"
