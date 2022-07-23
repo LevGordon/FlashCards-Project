@@ -2,8 +2,8 @@
 
 //////////////// / TEST IT OUT / ////////////////////
                      
+https://flash-cards-app-beta.vercel.app/decks/1
 
-        https://flash-cards-app-beta.vercel.app
  /////////////////////////////////////////////////////
  
 Write your own flash cards and revise for a test!
